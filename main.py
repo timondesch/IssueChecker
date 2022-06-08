@@ -43,8 +43,33 @@ class Repo:
 
 # url = "https://api.github.com/repos/asciinema/asciinema/issues"
 test_url = "https://github.com/pallets/flask/issues"
-curl_object = pycurl.Curl()
+
+wordlist = ['review', 'cli']
 
 repo = Repo(test_url)
-repo.print_issues()
-repo.print_labels()
+# repo.print_issues()
+# repo.print_labels()
+
+
+def filter_issues(repo, wl):
+    """Returns issues that match at least a word from the wordlist.
+
+    Args:
+        repo: Repo object representing a GitHub repository.
+        wl: A list of words.
+
+    Returns:
+        The curated list containing only matching issues.
+    """
+    new_issues = []
+    for issue in repo.issues:
+        for label in issue['labels']:
+            for word in wl:
+                if word in label['name']:
+                    new_issues.append(issue)
+                    break
+    return new_issues
+
+
+issues = filter_issues(repo, wordlist)
+print(issues)
