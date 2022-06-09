@@ -1,5 +1,4 @@
-from Repo import *
-
+from Global import *
 
 # url = "https://api.github.com/repos/asciinema/asciinema/issues"
 test_url = "https://github.com/pallets/flask/issues"
