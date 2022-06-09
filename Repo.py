@@ -7,6 +7,7 @@ import json
 class Repo:
     def __init__(self, url):
         self.base_url = url
+        self.user, self.name = self.id = self.set_id()
         self.transformed_url = self.url_transformer()
         self.label_url = self.url_transformer(True)
         self.issues = self.updated_issues()
@@ -31,11 +32,14 @@ class Repo:
     def updated_labels(self):
         return json.loads(self.get_from_url(self.label_url).getvalue().decode('iso-8859-1'))
 
-    def url_transformer(self, for_labels=False):
+    def set_id(self):
         url = self.base_url
         split_url = url.split('/')
         user, repo = split_url[-3], split_url[-2]
-        url = f"https://api.github.com/repos/{user}/{repo}/"
+        return user, repo
+
+    def url_transformer(self, for_labels=False):
+        url = f"https://api.github.com/repos/{self.user}/{self.name}/"
         return url + "labels" if for_labels else url + "issues"
 
     def print_issues(self):

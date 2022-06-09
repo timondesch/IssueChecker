@@ -13,3 +13,7 @@ class Global:
 
         for user in self.users:
             user.update_issues()
+
+    def add_repo(self, repo_url):
+        repo = Repo(repo_url)
+        self.repos[repo.id] = repo
